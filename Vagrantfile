@@ -19,6 +19,7 @@ Vagrant::Config.run do |config|
   end
 
   config.vm.define :storage2 do |s2|
+    # Some memory and cores
     s2.vm.customize ["modifyvm", :id, "--memory", 256]
     s2.vm.customize ["modifyvm", :id, "--cpus", 1]
     s2.vm.customize ["modifyvm", :id, "--name", "storage2"]
