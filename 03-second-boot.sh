@@ -10,11 +10,19 @@ sleep 5
 
 mdadm --create /dev/md0 --level=10 --raid-devices=4 --spare-devices=1 /dev/sd[b-f]1
 
-# TODO: Find a way to reliably wait for completion. Might grep /proc/mdstat
-# in a loop. The term to look for is 'resync'.
+while true; do
+  fgrep "resync" /proc/mdstat >/dev/null
+  if [ "$?" -eq "0" ]; then
+    echo "[+] Waiting for resync to finish. Sleeping 20 seconds."
+    sleep 20
+  else
+    echo "[+] Resync done."
+    break
+  fi
+done
 
 mdadm --examine --scan >> /etc/mdadm/mdadm.conf
 
-pvcreate /dev/md0
-vgcreate data /dev/md0
-lvcreate -n test --size 1G data
+#pvcreate /dev/md0
+#vgcreate data /dev/md0
+#lvcreate -n test --size 1G data
