@@ -12,14 +12,14 @@ Each of the machines comes with a stack of virtual SAS hard drives, in a RAID10 
 
 This is just an overview. See the next section for step-by-step instructions.
 
-This machine is unique in that you'll actually need to do some additional work to get it up and running. We can blame this on Vagrant. The additional hard drives can only be added to the VM as soon as VirtualBox knows about it. However, Vagrant immediately boots a VM at creation (`vagrant up`) time. So what you will have to do is:
+This setup is different to my others in that you'll actually need to do some additional work to get it up and running. We can blame this on Vagrant. The additional hard drives can only be added to the VM as soon as VirtualBox knows about it. However, Vagrant immediately boots a VM at creation (`vagrant up`) time. So what you will have to do is:
 
 1. Create the VMs using `vagrant up`.
 1. If you are using a vanilla precise64 base box, you'll have to install the `mdadm` tools, which are not included by default. There is a script here which will do that for you.
 1. Shut down the VMs. This is annoying, but VirtualBox before version 4.1 does not know about HD hotplugging, so we must attach them when the VMs are turned off.
 1. Create and attach the virtual hard disks. Again, there is a script which will do the heavy lifting for you.
 1. Boot the machines again. Now you'll need to run another set of commands (read: script again) to create the RAID arrays, LVM volumes etc.
-1. Then, the chef cookbooks will do the rest for you.
+1. Then, the chef cookbooks will do the rest for you. **This part is not implemented yet.**
 
 # Instructions
 
@@ -49,7 +49,7 @@ This process should be very quick. Bring up the VMs again, SSH into them again a
 storage: $ sudo /vagrant/03-second-boot.sh
 ```
 
-This will use the `mdadm` tool to assemble the array. The resulting array will then be turned into a physical volume for LVM. A volume group called `data` will be set up over the entirety of the physical volume. And you'll get a first logical volume in there to boost! It's called `test` and 1GB in size.
+This will use the `mdadm` tool to assemble the RAID array. The resulting array will then be turned into a physical volume for LVM. A volume group called `data` will be set up over the entirety of the physical volume. And you'll get a first logical volume in there to boost! It's called `test` and 1GB in size.
 
 # Roadmap, Todo
 
@@ -59,6 +59,7 @@ This will use the `mdadm` tool to assemble the array. The resulting array will t
 * We could get rid of setting the VMs name, too; note that Vagrant stores the UUIDs in `.vagrant`.
 * Tests?
 * Chef coobooks:
+- mdadm
 - DRBD
 - iSCSI
 - NFS
