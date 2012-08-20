@@ -32,6 +32,12 @@ Vagrant::Config.run do |config|
 
       # Networking, in addition to the bridged interface
       box.vm.network :hostonly, options[:ip]
+
+      # Provisioning
+      config.vm.provision :chef_solo do |chef|
+        chef.cookbooks_path = "cookbooks"
+        chef.add_recipe("prerequisites")
+      end
     end
 
   end
