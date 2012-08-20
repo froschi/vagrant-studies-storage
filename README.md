@@ -8,9 +8,11 @@ What you'll get:
 * Redundancy is managed over DRBD and heartbeat.
 * The machines serves chunks of storage toward the hostonly network over iSCSI and NFS.
 
-Each of the machines comes with four virtual 10GB SAS hard drives, in a RAID10 setup.
+Each of the machines comes with four virtual 15GB SAS hard drives, in a RAID10 setup.
 
 # Details
+
+This is just an overview. See the next section for step-by-step instructions.
 
 This machine is unique in that you'll actually need to do some additional work to get it up and running. We can blame this on Vagrant. The additional hard drives can only be added to the VM as soon as VirtualBox knows about it. However, Vagrant immediately boots a VM at creation (`vagrant up`) time. So what you will have to do is:
 
@@ -20,6 +22,23 @@ This machine is unique in that you'll actually need to do some additional work t
 1. Create and attach the virtual hard disks. Again, there is a script which will do the heavy lifting for you.
 1. Boot the machines again. Now you'll need to run another set of commands (read: script again) to create the RAID arrays, LVM volumes etc.
 1. Then, the chef cookbooks will do the rest for you.
+
+# Instructions
+
+Time to get your hands dirty. First, clone the repo and `cd` into it. Take a look at the `Vagrantfile` to see if you want to adjust anything. Then, bring up the machines:
+
+```
+$ vagrant up storage1 storage2
+```
+
+# Todo
+
+* Use variables in the Vagrantfile. In fact, move everything into some JSON blocks for configuration.
+* The creation of the SAS controller and its attached hard disks could be plugged somewhere into Vagrant's middleware; that way, it might be possible to have the disks available before booting, making the reboot unnecessary.
+* Chef
+* DRBD
+* iSCSI
+* NFS
 
 # Links & References
 
