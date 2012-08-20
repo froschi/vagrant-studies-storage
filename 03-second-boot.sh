@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for disk in b c d e; do
+for disk in b c d e f; do
   sfdisk /dev/sd${disk} <<EOF
 ,,fd
 EOF
@@ -8,7 +8,7 @@ done
 
 sleep 5
 
-mdadm --create /dev/md0 --level=10 --raid-devices=4 /dev/sd[b-e]1
+mdadm --create /dev/md0 --level=10 --raid-devices=5 /dev/sd[b-f]1
 
 # TODO: Find a way to reliably wait for completion. Might grep /proc/mdstat
 # in a loop.

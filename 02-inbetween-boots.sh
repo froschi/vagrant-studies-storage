@@ -6,7 +6,7 @@ mkdir -p disks
 
 for s in 1 2; do
   VBoxManage storagectl storage${s} --name "SAS Controller" --add sas --controller LSILogicSAS
-  for d in 1 2 3 4; do
+  for d in 1 2 3 4 5; do
     imgfile="disks/storage${s}${d}.vdi"
     if [ ! -f $imgfile ]; then
       echo "[+] Creating disk $imgfile"
