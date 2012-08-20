@@ -1,12 +1,8 @@
 # Description
 
-This Vagrant setup is part of a series of VMs simulating an 'enterprise'-style infrastructure. It creates a pair of VMs simulating a storage server. It is based on Ubuntu, using the precise64 base box.
+This Vagrant setup is part of a series of VMs simulating an 'enterprise'-style infrastructure. It creates a pair of VMs, turning them into a redundant storage server.
 
-What you'll get:
-
-* A pair of redundant storage machines.
-* Redundancy is managed over DRBD and heartbeat.
-* The machines serves chunks of storage toward the hostonly network over iSCSI and NFS.
+You'll get a pair of redundant storage machines, based on Ubuntu 12.04LTS. HA and failover is managed via DRBD and heartbeat. The machines serve chunks of storage towards the hostonly network over iSCSI and NFS.
 
 Each of the machines comes with a stack of virtual SAS hard drives, in a RAID10 setup.
 
