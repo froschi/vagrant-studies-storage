@@ -1,39 +1,39 @@
+default_box_url = "/home/thorsten/.vagrant.d/boxes/froschi-precise64-base.box"
+
+storage_boxes = {
+  :storage1 => {
+    :url => default_box_url,
+    :ip => "192.168.1.10",
+  },
+  :storage2 => {
+    :url => default_box_url,
+    :ip => "192.168.1.11",
+  },
+}
+
 Vagrant::Config.run do |config|
 
-  config.vm.define :storage1 do |s1|
-    # Some memory and cores
-    s1.vm.customize ["modifyvm", :id, "--memory", 256]
-    s1.vm.customize ["modifyvm", :id, "--cpus", 1]
-    s1.vm.customize ["modifyvm", :id, "--name", "storage1"]
+  storage_boxes.each_pair do |name, options|
 
-    # Disable vbguest; manage by hand, if at all
-    s1.vbguest.auto_update = false
-    s1.vbguest.no_remote = true
+    config.vm.define name do |box|
+      # Some metadata
+      box.vm.box = name.to_s
+      box.vm.host_name = name.to_s
+      box.vm.box_url = options[:url]
 
-    # Networking, in addition to the bridged interface
-    s1.vm.network :hostonly, "192.168.1.10"
+      # Hardware configuration
+      box.vm.customize ["modifyvm", :id, "--memory", 256]
+      box.vm.customize ["modifyvm", :id, "--cpus", 1]
+      box.vm.customize ["modifyvm", :id, "--name", name]
 
-    s1.vm.box = "storage1"
-    s1.vm.host_name = "storage1"
-    s1.vm.box_url = "/home/thorsten/.vagrant.d/boxes/froschi-precise64-base.box"
-  end
+      # Disable vbguest
+      box.vbguest.auto_update = false
+      box.vbguest.no_remote = true
 
-  config.vm.define :storage2 do |s2|
-    # Some memory and cores
-    s2.vm.customize ["modifyvm", :id, "--memory", 256]
-    s2.vm.customize ["modifyvm", :id, "--cpus", 1]
-    s2.vm.customize ["modifyvm", :id, "--name", "storage2"]
+      # Networking, in addition to the bridged interface
+      box.vm.network :hostonly, options[:ip]
+    end
 
-    # Disable vbguest; manage by hand, if at all
-    s2.vbguest.auto_update = false
-    s2.vbguest.no_remote = true
-
-    # Networking, in addition to the bridged interface
-    s2.vm.network :hostonly, "192.168.1.11"
-
-    s2.vm.box = "storage2"
-    s2.vm.host_name = "storage2"
-    s2.vm.box_url = "/home/thorsten/.vagrant.d/boxes/froschi-precise64-base.box"
   end
 
 end
