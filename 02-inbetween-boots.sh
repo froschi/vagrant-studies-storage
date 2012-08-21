@@ -11,8 +11,8 @@ for s in 1 2; do
     if [ ! -f $imgfile ]; then
       echo "[+] Creating disk $imgfile"
       VBoxManage createhd --filename $imgfile --size $DISK_SIZE --format VDI --variant Standard
-      VBoxManage storageattach storage${s} --storagectl "SAS Controller" --port ${d} --device 0 --type hdd --medium $imgfile
     fi
+    VBoxManage storageattach storage${s} --storagectl "SAS Controller" --port ${d} --device 0 --type hdd --medium $imgfile
   done
 done
 
