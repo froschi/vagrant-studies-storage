@@ -22,6 +22,7 @@ while true; do
 done
 
 mdadm --examine --scan >> /etc/mdadm/mdadm.conf
+update-initramfs -u
 
 #pvcreate /dev/md0
 #vgcreate data /dev/md0
