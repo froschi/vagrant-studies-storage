@@ -2,11 +2,13 @@
 
 This Vagrant setup is part of a series of VMs designed to simulate an 'enterprise'-style infrastructure.
 
-Here, we create a pair of VMs, turning them into a redundant storage server.
+Here, we create a pair of VMs, turning them into a redundant storage server. You'll get a pair of redundant storage machines, based on Ubuntu 12.04LTS. Each of the machines comes with a stack of virtual SAS hard drives, in a RAID10 setup. The RAID is integrated into a DRBD mirrored block device.
 
-You'll get a pair of redundant storage machines, based on Ubuntu 12.04LTS. HA and failover is managed via DRBD and heartbeat. The machines serve chunks of storage towards the hostonly network over iSCSI and NFS.
+## Where did NFS, iSCSI, ... go?
 
-Each of the machines comes with a stack of virtual SAS hard drives, in a RAID10 setup.
+Initially, I wanted to implement the entire thing on top of this VM, including pacemaker for failover, as well as NFS and iSCSI. My plans are still to integrate these things in the future; however, for now I will use this setup here as a building block, whilst I implement corosync, pacemaker etc in separate setups.
+
+The main reason for this approach is that in the end, I want to have reusable and re-pluggable chef cookbooks.
 
 # Overview
 
@@ -62,13 +64,8 @@ Nothing. They are there and get executed, but they are not doing anything useful
 * If the previous works, the remainder of the setup could be performed via shell-based provisioning. Even better! We write our own provisioner and sitcl stuff into the prepare method.
 * We could get rid of setting the VMs name, too; note that Vagrant stores the UUIDs in `.vagrant`.
 * Tests?
-* Chef coobooks:
-- mdadm
-- DRBD
-- iSCSI
-- NFS
 
 # Links & References
 
-* DRBD: 
-* Vagrant: 
+* DRBD:  http://www.drbd.org/
+* Vagrant: http://www.vagrantup.com/
