@@ -11,6 +11,8 @@ storage_boxes = {
   },
 }
 
+require './lib/hd_provisioner.rb'
+
 Vagrant::Config.run do |config|
 
   storage_boxes.each_pair do |name, options|
@@ -20,6 +22,9 @@ Vagrant::Config.run do |config|
       box.vm.box = name.to_s
       box.vm.host_name = name.to_s
       box.vm.box_url = options[:url]
+
+      # Use this when debugging
+      #box.vm.boot_mode = :gui
 
       # Hardware configuration
       box.vm.customize ["modifyvm", :id, "--memory", 256]
@@ -33,10 +38,18 @@ Vagrant::Config.run do |config|
       # Networking, in addition to the bridged interface
       box.vm.network :hostonly, options[:ip]
 
+      # Test.
+      box.vm.provision HDProvisioner
+
       # Provisioning
-      config.vm.provision :chef_solo do |chef|
+      box.vm.provision :chef_solo do |chef|
         chef.cookbooks_path = "cookbooks"
         chef.add_recipe("prerequisites")
+        chef.add_recipe("drbd")
+
+        chef.json = {
+          :stuff => name
+        }
       end
     end
 
