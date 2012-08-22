@@ -24,6 +24,12 @@ done
 mdadm --examine --scan >> /etc/mdadm/mdadm.conf
 update-initramfs -u
 
+# Initialize DRBD meta data
+drbdadm create-md r0
+
+# We want this reboot, because we have changed the kernel above.
+reboot
+
 #pvcreate /dev/md0
 #vgcreate data /dev/md0
 #lvcreate -n test --size 1G data
