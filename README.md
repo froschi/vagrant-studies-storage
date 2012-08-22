@@ -60,6 +60,7 @@ Nothing. They are there and get executed, but they are not doing anything useful
 
 # Roadmap, Todo
 
+* Amend cookbooks. They do not contain my name, my email, or a correct license.
 * The creation of the SAS controller and its attached hard disks could be plugged somewhere into Vagrant's middleware; that way, it might be possible to have the disks available before booting, making the reboot unnecessary.
 * If the previous works, the remainder of the setup could be performed via shell-based provisioning. Even better! We write our own provisioner and sitcl stuff into the prepare method.
 * We could get rid of setting the VMs name, too; note that Vagrant stores the UUIDs in `.vagrant`.
